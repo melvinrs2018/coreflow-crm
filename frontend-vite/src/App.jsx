@@ -3,6 +3,8 @@ import axios from 'axios'
 import ClientCard from './components/ClientCard'
 import LoadingSpinner from './components/LoadingSpinner'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 // --- COMPONENTE DE NOTIFICAÇÃO (TOAST) ---
 function Toast({ message, type, onClose }) {
   useEffect(() => {
@@ -51,7 +53,7 @@ function Login({ onLoginSuccess }) {
     e.preventDefault();
     setError('');
     try {
-      const response = await fetch('http://127.0.0.1:8000/api-token-auth/', {
+      const response = await fetch(`${API_URL}/api-token-auth/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -99,7 +101,7 @@ function App() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', address: '' })
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedClient, setSelectedClient] = useState(null)
-  
+
   // Novos estados para UI profissional
   const [toast, setToast] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(null)
@@ -107,7 +109,7 @@ function App() {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Token ${token}`
-      axios.get('http://127.0.0.1:8000/api/clients/')
+      axios.get(`${API_URL}/api/clients/`)
         .then(response => {
           setClients(response.data)
           setLoading(false)
@@ -147,7 +149,7 @@ function App() {
 
   const handleDeleteClient = async () => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/clients/${confirmDelete}/`);
+      await axios.delete(`${API_URL}/api/clients/${confirmDelete}/`);
       setClients(clients.filter(c => c.id !== confirmDelete));
       showToast('Client deleted successfully!');
     } catch (error) {
@@ -161,11 +163,11 @@ function App() {
     e.preventDefault();
     try {
       if (editingClient) {
-        const response = await axios.put(`http://127.0.0.1:8000/api/clients/${editingClient.id}/`, formData);
+        const response = await axios.put(`${API_URL}/api/clients/${editingClient.id}/`, formData);
         setClients(clients.map(c => c.id === editingClient.id ? response.data : c));
         showToast('Client updated successfully!');
       } else {
-        const response = await axios.post('http://127.0.0.1:8000/api/clients/', formData);
+        const response = await axios.post(`${API_URL}/api/clients/`, formData);
         setClients([...clients, response.data]);
         showToast('Client registered successfully!');
       }
@@ -198,10 +200,10 @@ function App() {
 
   return (
     <div style={{ padding: '40px', fontFamily: 'Arial, sans-serif', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
-      
+
       {/* Toast de Notificação */}
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      
+
       {/* Modal de Confirmação de Delete */}
       {confirmDelete && <ConfirmModal message="Are you sure you want to permanently delete this client?" onConfirm={handleDeleteClient} onCancel={() => setConfirmDelete(null)} />}
 
@@ -223,7 +225,7 @@ function App() {
       </div>
 
       <h2 style={{ color: '#374151', textAlign: 'center' }}>Total Clients: {filteredClients.length} {searchTerm && `(filtered from ${clients.length})`}</h2>
-      
+
       {showForm && (
         <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', maxWidth: '500px', margin: '0 auto 30px auto', border: '1px solid #e5e7eb' }}>
           <h3 style={{ marginTop: 0, color: '#1e40af' }}>{editingClient ? 'Edit Client' : 'Register New Client'}</h3>
