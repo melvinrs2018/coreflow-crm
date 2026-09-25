@@ -63,7 +63,7 @@ ROOT_URLCONF = 'coreflow.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend-vite' / 'dist'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
