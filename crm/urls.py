@@ -11,5 +11,6 @@ router.register(r'orders', views.OrderViewSet)
 router.register(r'tasks', views.TaskViewSet)
 
 urlpatterns = [
+    path('api/taskmanager/', include('tasks.urls')),
     path('api/', include(router.urls)),
 ]
