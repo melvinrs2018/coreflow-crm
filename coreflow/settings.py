@@ -1,16 +1,13 @@
-﻿"""
-Django settings for coreflow project.
-"""
-from pathlib import Path
+﻿from pathlib import Path
 from decouple import config
 import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
+# Domínio do PythonAnywhere + local
 ALLOWED_HOSTS = ['melvinrs.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
@@ -27,9 +24,9 @@ INSTALLED_APPS = [
     'tasks',
 ]
 
+# MIDDLEWARE LIMPO (sem WhiteNoise por enquanto)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -44,7 +41,7 @@ ROOT_URLCONF = 'coreflow.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(BASE_DIR / 'templates')],
+        'DIRS': [], # Vazio por enquanto, só API
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,31 +69,22 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'pt-br'
+TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# ✅ CONFIGURAÇÃO DE ARQUIVOS ESTÁTICOS (Blindada para PythonAnywhere)
+# Configuração mínima de estáticos (só para o Admin do Django funcionar)
 STATIC_URL = '/static/'
-STATIC_ROOT = str(BASE_DIR / 'staticfiles')
-STATICFILES_DIRS = [
-    str(BASE_DIR / 'frontend-vite' / 'dist' / 'assets'),
-]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly', # Permite ver sem login, facilita teste
     ],
 }
 
@@ -105,6 +93,5 @@ AUTH_USER_MODEL = 'crm.User'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://melvinrs2018.github.io",
     "https://melvinrs.pythonanywhere.com",
 ]
