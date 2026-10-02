@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['melvinrs.pythonanywhere.com', 'localhost', '127.0.0.1']
 
@@ -102,8 +102,12 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'crm.User'
 
+# ✅ LISTA FECHADA CORRETAMENTE AQUI:
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://melvinrs2018.github.io",
 ]
+
+# ✅ STATIC_ROOT FORA DA LISTA, ONDE DEVE ESTAR:
+STATIC_ROOT = BASE_DIR / 'staticfiles'
