@@ -75,7 +75,7 @@ USE_I18N = True
 USE_TZ = True
 
 # Configuração mínima de estáticos (só para o Admin do Django funcionar)
-STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 REST_FRAMEWORK = {
