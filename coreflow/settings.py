@@ -86,9 +86,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
-
+    
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    # 'https://O-TEU-SITE.netlify.app',   # adiciona quando tiveres o link do Netlify
+    'https://coreflow-crm-app.netlify.app',
 ]
