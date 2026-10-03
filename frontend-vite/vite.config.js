@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/coreflow-crm/',
+  base: '/',
+  // base: '/coreflow-crm/',
   plugins: [react()],
 })
