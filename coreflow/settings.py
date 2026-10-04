@@ -86,9 +86,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
-    
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'https://coreflow-crm-app.netlify.app',
+    'https://taskmanager2027.netlify.app',   # <-- linha nova
 ]
